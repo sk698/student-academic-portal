@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarSanctuary | Admin Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9fa",
+                    "background": "#f8f9fa",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#424752",
+                    "secondary": "#555f73",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#722b00",
+                    "surface-container-high": "#e7e8e9",
+                    "on-tertiary-container": "#ffc2a7",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#e1e3e4",
+                    "primary-container": "#0056b3",
+                    "surface-container": "#edeeef",
+                    "primary": "#003f87",
+                    "on-primary-container": "#bbd0ff",
+                    "on-tertiary-fixed": "#351000",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#acc7ff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "tertiary-container": "#983c00",
+                    "surface-container-highest": "#e1e3e4",
+                    "inverse-surface": "#2e3132",
+                    "inverse-on-surface": "#f0f1f2",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3d475b",
+                    "surface-container-low": "#f3f4f5",
+                    "secondary-container": "#d8e2fc",
+                    "on-background": "#191c1d",
+                    "outline-variant": "#c2c6d4",
+                    "on-primary-fixed": "#001a40",
+                    "surface-tint": "#115cb9",
+                    "outline": "#727784",
+                    "on-secondary-container": "#5a647a",
+                    "on-primary-fixed-variant": "#004491",
+                    "secondary-fixed": "#d8e2fc",
+                    "on-secondary-fixed": "#111c2e",
+                    "primary-fixed-dim": "#acc7ff",
+                    "secondary-fixed-dim": "#bcc6df",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#d7e2ff",
+                    "surface-dim": "#d9dadb",
+                    "tertiary-fixed-dim": "#ffb694",
+                    "on-surface": "#191c1d",
+                    "surface-bright": "#f8f9fa",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.5rem",
+                    "lg": "1rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active { transition: transform 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 docked full-width top-0 sticky z-40 flex justify-between items-center w-full px-6 py-3">
+<div class="flex items-center gap-4">
+<span class="text-blue-900 font-extrabold tracking-tighter">ScholarSanctuary</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-8 text-sm">
+<a class="text-blue-900 dark:text-blue-400 font-bold border-b-2 border-blue-900 transition-colors" href="#">Admin</a>
+<a class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors px-2 py-1 rounded" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors px-2 py-1 rounded" href="#">Announcements</a>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors rounded-full" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors rounded-full" data-icon="help">help</button>
+<img alt="Student profile photo" class="w-10 h-10 rounded-full object-cover" data-alt="Close-up portrait of a professional academic administrator in a brightly lit office setting with soft focus library background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuT9TaGltj0u3PdrSwLLyau-KbdSXeIwf5CAPmxazehkalPMP324IARsneAAP6yucI5FJJu7Pgdhci9g2e2z0BlVZcG9u-shGvtrL1TddUlrXGyapAJ9jRix8vGqiXluzyzoTBhScdambaRHnH29eihbEn2VtCe90ERcvHNNr6a7Exgfcet91FLgP71-fv9RrpW58ysl3NRlQ8Hpfjopk646tfobBhJAUe3oh9mycgwlu83XXuFENwcO2SlU7NfQ4C-_qj-3WGWuFl"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="bg-slate-50 dark:bg-slate-950 h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-6 hidden lg:flex border-r border-transparent">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h2 class="text-lg font-black text-blue-900 dark:text-blue-400 leading-none">Academic Portal</h2>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">University Excellence</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-sm font-semibold Manrope">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="text-sm font-semibold Manrope">Results</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="text-sm font-semibold Manrope">Timetable</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="text-sm font-semibold Manrope">Announcements</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-sm font-semibold Manrope">Profile</span>
+</a>
+<a class="flex items-center gap-3 bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-200 rounded-2xl px-4 py-3 mx-2 translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="text-sm font-semibold Manrope">Admin</span>
+</a>
+</nav>
+<div class="mt-auto px-2">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-red-50 text-red-600 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="text-sm font-semibold Manrope">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="lg:ml-64 p-6 lg:p-12 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="mb-10">
+<h1 class="text-4xl font-extrabold tracking-tight text-blue-900 mb-2">Administrative Center</h1>
+<p class="text-secondary body-md">Manage institutional records, faculty updates, and student announcements from a unified sanctuary.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Column 1: Upload Results & Manual Entry -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Upload Results Card -->
+<section class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-bold text-blue-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="upload_file">upload_file</span>
+                            Upload Results
+                        </h2>
+<span class="text-xs font-bold text-secondary-container bg-primary px-3 py-1 rounded-full uppercase tracking-widest">Semester 1 - 2024</span>
+</div>
+<div class="bg-surface-container-low border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center mb-8 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-primary mb-4 group-hover:scale-110 transition-transform block">cloud_upload</span>
+<p class="font-semibold text-on-surface mb-1">Drag and drop your result CSV here</p>
+<p class="text-sm text-secondary">or click to browse local files (MAX 10MB)</p>
+</div>
+<div class="relative py-4 mb-4">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/15"></div></div>
+<div class="relative flex justify-center text-xs uppercase tracking-widest font-bold"><span class="bg-surface-container-lowest px-4 text-secondary">Or Manual Entry</span></div>
+</div>
+<form class="grid grid-cols-2 gap-6">
+<div class="col-span-2 md:col-span-1">
+<label class="block text-xs font-bold text-secondary uppercase tracking-wider mb-2">Student ID</label>
+<input class="w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary/40 transition-all text-sm py-3 px-4" placeholder="e.g. SCH-99231" type="text"/>
+</div>
+<div class="col-span-2 md:col-span-1">
+<label class="block text-xs font-bold text-secondary uppercase tracking-wider mb-2">Course Code</label>
+<input class="w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary/40 transition-all text-sm py-3 px-4" placeholder="CS-201" type="text"/>
+</div>
+<div class="col-span-2 md:col-span-1">
+<label class="block text-xs font-bold text-secondary uppercase tracking-wider mb-2">Grade/Score</label>
+<input class="w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary/40 transition-all text-sm py-3 px-4" placeholder="0-100" type="number"/>
+</div>
+<div class="col-span-2 md:col-span-1 flex items-end">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white font-bold py-3 px-6 rounded-xl hover:shadow-lg transition-all scale-95 active:scale-90 duration-200">
+                                Submit Record
+                            </button>
+</div>
+</form>
+</section>
+<!-- Statistics Section (Tonal Layering Example) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-low rounded-xl p-6 border-l-4 border-primary">
+<p class="text-xs font-bold text-secondary uppercase tracking-widest mb-1">Total Uploads Today</p>
+<p class="text-3xl font-black text-blue-900">1,284</p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 border-l-4 border-tertiary">
+<p class="text-xs font-bold text-secondary uppercase tracking-widest mb-1">Pending Validation</p>
+<p class="text-3xl font-black text-tertiary">42</p>
+</div>
+</div>
+</div>
+<!-- Column 2: Announcements -->
+<div class="lg:col-span-5 space-y-8">
+<!-- Create Announcement Form -->
+<section class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]">
+<h2 class="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="add_comment">add_comment</span>
+                        Create Announcement
+                    </h2>
+<form class="space-y-5">
+<div>
+<label class="block text-xs font-bold text-secondary uppercase tracking-wider mb-2">Title</label>
+<input class="w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary/40 transition-all text-sm py-3 px-4" placeholder="Academic integrity seminar..." type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-secondary uppercase tracking-wider mb-2">Priority Level</label>
+<select class="w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary/40 transition-all text-sm py-3 px-4">
+<option>Standard</option>
+<option>High Priority</option>
+<option>Urgent / Mandatory</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-secondary uppercase tracking-wider mb-2">Message</label>
+<textarea class="w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary/40 transition-all text-sm py-3 px-4" placeholder="Detailed announcement text..." rows="4"></textarea>
+</div>
+<button class="w-full bg-blue-900 text-white font-bold py-4 px-6 rounded-xl hover:bg-primary transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+                            Broadcast Announcement
+                        </button>
+</form>
+</section>
+<!-- Recent Announcements List -->
+<section class="bg-surface-container-low rounded-xl p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-blue-900">Recently Posted</h3>
+<a class="text-xs font-bold text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-4">
+<!-- Announcement Item 1 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 group hover:shadow-md transition-shadow">
+<div class="w-1 bg-tertiary-container rounded-full"></div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-sm font-bold text-on-surface">End of Term Library Hours</h4>
+<span class="text-[10px] text-secondary font-medium">2h ago</span>
+</div>
+<p class="text-xs text-secondary line-clamp-1 mb-3">Library will be open 24/7 during the finals week starting Dec 12...</p>
+<div class="flex gap-4">
+<button class="text-[10px] font-bold text-primary flex items-center gap-1 hover:text-blue-700">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span> EDIT
+                                    </button>
+<button class="text-[10px] font-bold text-error flex items-center gap-1 hover:text-red-700">
+<span class="material-symbols-outlined text-[14px]" data-icon="delete">delete</span> DELETE
+                                    </button>
+</div>
+</div>
+</div>
+<!-- Announcement Item 2 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 group hover:shadow-md transition-shadow">
+<div class="w-1 bg-primary rounded-full"></div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-sm font-bold text-on-surface">Campus Shuttle Update</h4>
+<span class="text-[10px] text-secondary font-medium">Yesterday</span>
+</div>
+<p class="text-xs text-secondary line-clamp-1 mb-3">New shuttle routes added for North Campus residential areas...</p>
+<div class="flex gap-4">
+<button class="text-[10px] font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span> EDIT
+                                    </button>
+<button class="text-[10px] font-bold text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="delete">delete</span> DELETE
+                                    </button>
+</div>
+</div>
+</div>
+<!-- Announcement Item 3 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 group hover:shadow-md transition-shadow">
+<div class="w-1 bg-secondary rounded-full"></div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-sm font-bold text-on-surface">Maintenance Notice</h4>
+<span class="text-[10px] text-secondary font-medium">3 days ago</span>
+</div>
+<p class="text-xs text-secondary line-clamp-1 mb-3">Server maintenance scheduled for Dec 05 between 2AM - 4AM...</p>
+<div class="flex gap-4">
+<button class="text-[10px] font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span> EDIT
+                                    </button>
+<button class="text-[10px] font-bold text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="delete">delete</span> DELETE
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- System Status Footer Section -->
+<footer class="mt-12 pt-8 border-t border-outline-variant/15">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-xs font-semibold text-secondary">Portal Online</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="speed">speed</span>
+<span class="text-xs font-semibold text-secondary">Latency: 24ms</span>
+</div>
+</div>
+<div class="flex items-center gap-8 text-[10px] font-bold text-secondary uppercase tracking-widest">
+<a class="hover:text-primary" href="#">System Logs</a>
+<a class="hover:text-primary" href="#">User Permissions</a>
+<a class="hover:text-primary" href="#">Database Backup</a>
+</div>
+</div>
+</footer>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md px-6 py-4 flex justify-around items-center z-50 border-t border-surface-container">
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold uppercase">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-blue-900">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+<span class="text-[10px] font-bold uppercase">Admin</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="text-[10px] font-bold uppercase">News</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-bold uppercase">Profile</span>
+</button>
+</nav>
+</body></html>

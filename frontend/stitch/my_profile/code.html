@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Profile | ScholarSanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9fa",
+                    "background": "#f8f9fa",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#424752",
+                    "secondary": "#555f73",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#722b00",
+                    "surface-container-high": "#e7e8e9",
+                    "on-tertiary-container": "#ffc2a7",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#e1e3e4",
+                    "primary-container": "#0056b3",
+                    "surface-container": "#edeeef",
+                    "primary": "#003f87",
+                    "on-primary-container": "#bbd0ff",
+                    "on-tertiary-fixed": "#351000",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#acc7ff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "tertiary-container": "#983c00",
+                    "surface-container-highest": "#e1e3e4",
+                    "inverse-surface": "#2e3132",
+                    "inverse-on-surface": "#f0f1f2",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3d475b",
+                    "surface-container-low": "#f3f4f5",
+                    "secondary-container": "#d8e2fc",
+                    "on-background": "#191c1d",
+                    "outline-variant": "#c2c6d4",
+                    "on-primary-fixed": "#001a40",
+                    "surface-tint": "#115cb9",
+                    "outline": "#727784",
+                    "on-secondary-container": "#5a647a",
+                    "on-primary-fixed-variant": "#004491",
+                    "secondary-fixed": "#d8e2fc",
+                    "on-secondary-fixed": "#111c2e",
+                    "primary-fixed-dim": "#acc7ff",
+                    "secondary-fixed-dim": "#bcc6df",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#d7e2ff",
+                    "surface-dim": "#d9dadb",
+                    "tertiary-fixed-dim": "#ffb694",
+                    "on-surface": "#191c1d",
+                    "surface-bright": "#f8f9fa",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.5rem",
+                    "lg": "1rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #003f87 0%, #0056b3 100%);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- SideNavBar (Execution from JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-slate-50 dark:bg-slate-950 flex flex-col py-6 z-50">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h2 class="text-lg font-black text-blue-900 leading-none">ScholarSanctuary</h2>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Academic Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 text-slate-600 px-4 py-3 mx-2 hover:bg-slate-200 rounded-2xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-sm font-semibold">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 text-slate-600 px-4 py-3 mx-2 hover:bg-slate-200 rounded-2xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="text-sm font-semibold">Results</span>
+</div>
+<div class="flex items-center gap-3 text-slate-600 px-4 py-3 mx-2 hover:bg-slate-200 rounded-2xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="text-sm font-semibold">Timetable</span>
+</div>
+<div class="flex items-center gap-3 text-slate-600 px-4 py-3 mx-2 hover:bg-slate-200 rounded-2xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="text-sm font-semibold">Announcements</span>
+</div>
+<!-- Active State: Profile -->
+<div class="flex items-center gap-3 bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-200 rounded-2xl px-4 py-3 mx-2 translate-x-1 duration-200 shadow-sm">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-sm font-semibold">Profile</span>
+</div>
+<div class="flex items-center gap-3 text-slate-600 px-4 py-3 mx-2 hover:bg-slate-200 rounded-2xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="text-sm font-semibold">Admin</span>
+</div>
+</nav>
+<div class="mt-auto px-4">
+<div class="flex items-center gap-3 text-slate-600 px-4 py-3 hover:bg-red-50 hover:text-red-600 rounded-2xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="text-sm font-semibold">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen bg-surface">
+<!-- TopAppBar (Execution from JSON) -->
+<header class="flex justify-between items-center w-full px-8 py-4 bg-white/80 backdrop-blur-md sticky top-0 z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search academic resources..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="h-8 w-px bg-surface-container mx-2"></div>
+<div class="flex items-center gap-3 pl-2">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-blue-900">Julian Casablancas</p>
+<p class="text-[10px] text-slate-500">Computer Science</p>
+</div>
+<img alt="Student profile photo" class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-container/20" data-alt="portrait of a professional young man with short dark hair in a clean studio setting with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU-LSEjEihhENELkM_WxJJ5eXItFZ0PEiiq1zY3mOisiHnhNJKnOAjf2Zacqr3LBGJcUEeOqirYeV-irJeCmigNgoejkeccFTHjlUPLn7LzwZGYZjxfkvIFg5ggXHjsuuwpmMTjgv57RSy6NfBFU7ylyyHrrAw3PVdJ2nNVoWr7YW1WP9w3wY_IF__gx2wI-iCEKpErrD7phWnPRYMGrIikakYYev_Uhl__wWy5SNYC7DFbqF5gW1PtyHZ3vOm5VZhwMKxHPUitCYH"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-8 max-w-5xl mx-auto">
+<!-- Page Header -->
+<div class="mb-10">
+<h1 class="text-4xl font-extrabold tracking-tighter text-primary mb-2">Student Profile</h1>
+<p class="text-secondary font-medium">Manage your personal information and academic identity.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left: Profile Image & Status (Bento Style) -->
+<div class="lg:col-span-4 space-y-6">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)] relative overflow-hidden group">
+<!-- Background Accent -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-500"></div>
+<div class="relative flex flex-col items-center text-center">
+<div class="relative mb-6">
+<div class="w-40 h-40 rounded-full ring-8 ring-surface-container p-1 bg-white overflow-hidden group/img">
+<img alt="Profile photo" class="w-full h-full object-cover rounded-full" data-alt="close-up portrait of a young male student with a thoughtful expression in a bright modern workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVKei8eG81UJqZmZ1SRZA2E9FzjI4tg3dm66_bXamm44dScl6QlJShSVRZxYMqhRzCDfhtKgTLhB_8Zy-d_hZXh9owE4cMMYF5JShq1b2IVAA8h4l1URzxAjYmnBS17cw3_TzgZhoNrnzUWGTZ_-bcw1_tMmEVq_Hp5z8grQSM5lJECkmP6ZqSXmuSxY_jHH9rdLW0Kr1-C5tjofcFfEcG7bpBIIROEREXRiLM_LW_d8bLvs1pL11s4Sl867R6uOBRI1oZ8q0H6AJn"/>
+<div class="absolute inset-0 bg-primary/60 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity cursor-pointer rounded-full">
+<span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
+</div>
+</div>
+<button class="absolute bottom-2 right-2 bg-gradient-primary text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<h3 class="text-xl font-bold text-on-surface">Julian Casablancas</h3>
+<p class="text-sm text-secondary font-medium mb-4">Undergraduate Student</p>
+<div class="inline-flex items-center px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold tracking-wide">
+                                ACTIVE STATUS
+                            </div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]">
+<h4 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Academic Progress</h4>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-xs font-bold mb-2">
+<span class="text-on-surface">Credits Earned</span>
+<span class="text-primary">84 / 120</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-gradient-primary w-[70%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-medium">Cumulative GPA</p>
+<p class="text-sm font-bold text-on-surface">3.88 / 4.0</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Form Section -->
+<div class="lg:col-span-8">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold text-on-surface flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">badge</span>
+                                Personal Information
+                            </h2>
+</div>
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Student ID (Read-only aesthetic) -->
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant tracking-wide">STUDENT ID</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-sm font-mono text-secondary cursor-not-allowed" readonly="" type="text" value="ST-2024-8849"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 text-sm">lock</span>
+</div>
+</div>
+<!-- Department -->
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant tracking-wide">DEPARTMENT</label>
+<select class="w-full bg-surface-container-high border-none rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 appearance-none">
+<option>Computer Science &amp; Engineering</option>
+<option>Electrical Engineering</option>
+<option>Physics &amp; Mathematics</option>
+<option>Business Administration</option>
+</select>
+</div>
+<!-- Full Name -->
+<div class="space-y-2 md:col-span-2">
+<label class="text-xs font-bold text-on-surface-variant tracking-wide">FULL NAME</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-medium" type="text" value="Julian Casablancas"/>
+</div>
+<!-- Email -->
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant tracking-wide">EMAIL ADDRESS</label>
+<div class="relative">
+<input class="w-full bg-surface-container-high border-none rounded-lg py-3 px-4 pl-11 text-sm focus:ring-2 focus:ring-primary/20 transition-all" type="email" value="j.casablancas@university.edu"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">mail</span>
+</div>
+</div>
+<!-- Phone -->
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant tracking-wide">PHONE NUMBER</label>
+<div class="relative">
+<input class="w-full bg-surface-container-high border-none rounded-lg py-3 px-4 pl-11 text-sm focus:ring-2 focus:ring-primary/20 transition-all" type="tel" value="+1 (555) 234-5678"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">call</span>
+</div>
+</div>
+</div>
+<div class="pt-10 flex items-center justify-end gap-4 border-t border-surface-container">
+<button class="px-6 py-2.5 rounded-lg text-sm font-bold text-secondary hover:bg-surface-container transition-colors" type="button">
+                                    Cancel
+                                </button>
+<button class="px-8 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-primary shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all" type="submit">
+                                    Save Changes
+                                </button>
+</div>
+</form>
+</div>
+<!-- Security / Notification Mini-Settings (Bento) -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-low p-6 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-surface-container transition-colors">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary">key</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Security Settings</h4>
+<p class="text-xs text-slate-500">Update your password</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-surface-container transition-colors">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Notifications</h4>
+<p class="text-xs text-slate-500">Manage your alerts</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
