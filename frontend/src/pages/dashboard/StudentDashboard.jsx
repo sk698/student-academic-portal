@@ -64,7 +64,7 @@ function StudentDashboard() {
           </div>
         </BentoBox>
 
-        <BentoBox className="overflow-hidden bg-gradient-to-br from-primary to-primary-container text-white md:col-span-12 lg:col-span-6">
+        <BentoBox className="overflow-hidden bg-linear-to-br from-primary to-primary-container text-white md:col-span-12 lg:col-span-6">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-100">Academic Snapshot</p>
           <div className="mt-3 flex flex-wrap items-end justify-between gap-6">
             <div>

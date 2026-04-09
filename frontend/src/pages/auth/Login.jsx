@@ -5,7 +5,7 @@ function Login() {
   return (
     <>
       <div className="mb-8 flex items-center gap-2">
-        <div className="grid h-10 w-10 place-items-center rounded-lg bg-gradient-to-br from-primary to-primary-container text-white">
+        <div className="grid h-10 w-10 place-items-center rounded-lg bg-linear-to-br from-primary to-primary-container text-white">
           <span className="material-symbols-outlined">school</span>
         </div>
         <span className="font-headline text-2xl font-extrabold tracking-tight text-primary">ScholarSanctuary</span>
