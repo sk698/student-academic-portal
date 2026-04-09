@@ -9,8 +9,7 @@ public class StudentRequest {
     private String name;
 
     private int id;
-    
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "Section can only contain letters and spaces")
+
     private String section;
 
     public StudentRequest() {}
