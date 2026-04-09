@@ -1,19 +1,23 @@
 package com.example.demo.dto;
-import java.time.LocalDateTime;
 
-public class ApiResponse<T> {
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class ApiError {
+
     private boolean success;
     private String message;
-    private T data;
+    private List<String> errors;
     private LocalDateTime timestamp;
 
-    public ApiResponse(boolean success, String message, T data) {
-        this.success = success;
+    public ApiError(String message, List<String> errors) {
+        this.success = false;
         this.message = message;
-        this.data = data;
+        this.errors = errors;
         this.timestamp = LocalDateTime.now();
     }
 
+    // getters/setters
     public boolean isSuccess() {
         return success;
     }
@@ -30,12 +34,12 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
-    public T getData() {
-        return data;
+    public List<String> getErrors() {
+        return errors;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     public LocalDateTime getTimestamp() {
@@ -46,4 +50,3 @@ public class ApiResponse<T> {
         this.timestamp = timestamp;
     }
 }
-
