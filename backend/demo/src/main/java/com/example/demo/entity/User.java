@@ -12,7 +12,10 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    @Column(nullable = false, length = 60)
     private String password;
+
+    
 
     // Getters and setters
     public Long getId() {
