@@ -14,7 +14,7 @@ import {
 } from '../../services/api'
 
 function AdminPanel() {
-  const [resultForm, setResultForm] = useState({ studentId: '', courseCode: '', grade: '' })
+  const [resultForm, setResultForm] = useState({ studentId: '', courseCode: '', semester: '', grade: '', score: '' })
   const [announcementForm, setAnnouncementForm] = useState({ title: '', priority: 'Standard', message: '' })
   const [sectionForm, setSectionForm] = useState({ code: '', name: '', department: 'COMPUTER_SCIENCE' })
   const [sectionEventForm, setSectionEventForm] = useState({
@@ -67,9 +67,15 @@ function AdminPanel() {
   const handleResultSubmit = async (event) => {
     event.preventDefault()
     try {
-      await uploadResult(resultForm)
+      await uploadResult({
+        studentId: resultForm.studentId.trim(),
+        courseCode: resultForm.courseCode.trim(),
+        semester: resultForm.semester.trim(),
+        grade: resultForm.grade.trim(),
+        score: resultForm.score === '' ? undefined : Number(resultForm.score),
+      })
       setStatusMessage('Result submitted successfully.')
-      setResultForm({ studentId: '', courseCode: '', grade: '' })
+      setResultForm({ studentId: '', courseCode: '', semester: '', grade: '', score: '' })
     } catch (error) {
       setStatusMessage(error.message)
     }
@@ -256,7 +262,9 @@ function AdminPanel() {
             <form className="grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleResultSubmit}>
               <input className="rounded-lg bg-surface-container-high px-4 py-3 text-sm" onChange={(event) => setResultForm((prev) => ({ ...prev, studentId: event.target.value }))} placeholder="Student ID" value={resultForm.studentId} />
               <input className="rounded-lg bg-surface-container-high px-4 py-3 text-sm" onChange={(event) => setResultForm((prev) => ({ ...prev, courseCode: event.target.value }))} placeholder="Course Code" value={resultForm.courseCode} />
-              <input className="rounded-lg bg-surface-container-high px-4 py-3 text-sm" onChange={(event) => setResultForm((prev) => ({ ...prev, grade: event.target.value }))} placeholder="Grade / Score" value={resultForm.grade} />
+              <input className="rounded-lg bg-surface-container-high px-4 py-3 text-sm" onChange={(event) => setResultForm((prev) => ({ ...prev, semester: event.target.value }))} placeholder="Semester (e.g. Fall 2026)" value={resultForm.semester} />
+              <input className="rounded-lg bg-surface-container-high px-4 py-3 text-sm" onChange={(event) => setResultForm((prev) => ({ ...prev, grade: event.target.value }))} placeholder="Grade (e.g. A-)" value={resultForm.grade} />
+              <input className="rounded-lg bg-surface-container-high px-4 py-3 text-sm" onChange={(event) => setResultForm((prev) => ({ ...prev, score: event.target.value }))} placeholder="Score (optional, e.g. 87.5)" type="number" step="0.01" value={resultForm.score} />
               <GradientButton className="w-full" type="submit">Submit Record</GradientButton>
             </form>
           </article>

@@ -211,6 +211,15 @@ public class AdminDataService {
     }
 
     public Map<String, Object> createSingleResult(ResultUploadRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Result payload is required");
+        }
+
+        request.setStudentId(request.getStudentId() == null ? null : request.getStudentId().trim());
+        request.setCourseCode(request.getCourseCode() == null ? null : request.getCourseCode().trim().toUpperCase(Locale.ROOT));
+        request.setSemester(request.getSemester() == null ? null : request.getSemester().trim());
+        request.setGrade(request.getGrade() == null ? null : request.getGrade().trim());
+
         if (request.getScore() == null && request.getGrade() != null) {
             try {
                 request.setScore(Double.parseDouble(request.getGrade()));
@@ -224,7 +233,12 @@ public class AdminDataService {
             request.setSemester("Fall 2026");
         }
 
-        Result result = buildValidatedResult(request, 1, new ArrayList<>());
+        List<String> errors = new ArrayList<>();
+        Result result = buildValidatedResult(request, 1, errors);
+        if (result == null) {
+            throw new BadRequestException("Result submission failed: " + String.join(" | ", errors));
+        }
+
         resultRepository.save(result);
 
         Map<String, Object> data = new LinkedHashMap<>();
@@ -412,8 +426,8 @@ public class AdminDataService {
         if (!containsAny(normalized, "semester")) {
             throw new BadRequestException("Missing CSV header: semester");
         }
-        if (!containsAny(normalized, "score")) {
-            throw new BadRequestException("Missing CSV header: score");
+        if (!containsAny(normalized, "grade") && !containsAny(normalized, "score")) {
+            throw new BadRequestException("Missing CSV header: grade or score");
         }
     }
 

@@ -20,7 +20,7 @@ export const studentProfile = {
 }
 
 export const dashboardStats = [
-  { label: 'Cumulative GPA', value: '3.85', trend: 'Top 5% of your cohort' },
+  { label: 'Cumulative GPA', value: '9.04', trend: 'Top 5% of your cohort' },
   { label: 'Attendance', value: '94%', trend: '+2.4% vs last month' },
   { label: 'Credits Earned', value: '102 / 120', trend: 'On track for honors' },
 ]
@@ -44,8 +44,8 @@ export const assignments = [
 ]
 
 export const resultSummary = {
-  cgpa: '3.88',
-  majorGpa: '3.95',
+  cgpa: '9.04',
+  majorGpa: '9.24',
   credits: '102 / 120',
   ranking: 'Top 5% of Department',
   deansList: '4 Semesters',
@@ -70,7 +70,7 @@ export const timetableDays = [
   { day: 'Sat', date: 17 },
 ]
 
-export const timetableSlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
+export const timetableSlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00']
 
 export const timetableEvents = [
   { id: 1, day: 1, start: 1, duration: 2, title: 'Operating Systems', room: 'B-203', tone: 'blue' },

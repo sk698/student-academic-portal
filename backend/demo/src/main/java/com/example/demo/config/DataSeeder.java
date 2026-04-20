@@ -1,6 +1,8 @@
 package com.example.demo.config;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.DayOfWeek;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,8 +67,10 @@ public class DataSeeder implements CommandLineRunner {
                 }
             }
 
-            if ((existingUser.getStudentId() == null || existingUser.getStudentId().isBlank()) && existingUser.getRole() == Role.STUDENT) {
-                existingUser.setStudentId(generateUniqueStudentId("ST-2024-8849", existingUser.getId()));
+            if (existingUser.getRole() == Role.STUDENT) {
+                if (existingUser.getStudentId() == null || existingUser.getStudentId().isBlank() || "ST-2024-8849".equalsIgnoreCase(existingUser.getStudentId())) {
+                    existingUser.setStudentId(generateUniqueStudentId("24BCS12941", existingUser.getId()));
+                }
             }
             if (existingUser.getProgram() == null) {
                 existingUser.setProgram("B.Tech Computer Science");
@@ -106,7 +110,7 @@ public class DataSeeder implements CommandLineRunner {
             student.setUsername("student");
             student.setName("Julian Casablancas");
             student.setEmail("student@university.edu");
-            student.setStudentId(generateUniqueStudentId("ST-2024-8849", null));
+            student.setStudentId(generateUniqueStudentId("24BCS12941", null));
             student.setProgram("B.Tech Computer Science");
             student.setSemester("Semester 6");
             student.setPhone("+1 (555) 234-5678");
@@ -162,23 +166,39 @@ public class DataSeeder implements CommandLineRunner {
         }
 
         if (timetableEventRepository.findByStudentOrderByDayIndexAscStartSlotAsc(student).isEmpty()) {
+            LocalDate today = LocalDate.now();
             timetableEventRepository.saveAll(List.of(
-                    createEvent(student, "Advanced Algorithm Design", "Room 402-A", "blue", "Mon", 1, 12, 1, 2, "CS401"),
-                    createEvent(student, "Data Mining & Warehousing", "Auditorium B", "emerald", "Tue", 2, 13, 2, 3, "CS385"),
-                    createEvent(student, "Software Engineering Ethics", "Room 201", "amber", "Wed", 3, 14, 1, 2, "CS430"),
-                    createEvent(student, "Project Management Workshop", "Innovation Lab", "rose", "Thu", 4, 15, 3, 4, "CS385"),
-                    createEvent(student, "Network Security", "Cyber Lab", "indigo", "Fri", 5, 16, 2, 2, "CS430"),
-                    createEvent(student, "Academic Mentorship", "Faculty Office", "cyan", "Sat", 6, 17, 2, 2, "MATH302")));
+                    createEventForDate(student, today, "Advanced Algorithms", "Room 402-A", "blue", 1, "CS401"),
+                    createEventForDate(student, today.plusDays(1), "Data Mining Workshop", "Auditorium B", "emerald", 2, "CS385"),
+                    createEventForDate(student, today.plusDays(2), "Software Engineering", "Room 201", "amber", 3, "CS430"),
+                    createEventForDate(student, today.plusDays(3), "Database Project", "Innovation Lab", "rose", 4, "CS385"),
+                    createEventForDate(student, today.plusDays(4), "Network Security Lab", "Cyber Lab", "indigo", 2, "CS430"),
+                    createEventForDate(student, today.plusDays(5), "Academic Mentorship", "Faculty Office", "cyan", 5, "MATH302")));
         }
 
-                if (timetableEventRepository.findBySectionOrderByDayIndexAscStartSlotAsc(cseSection).isEmpty()) {
+        // Seed timetable events for any student users that don't have them yet
+        userRepository.findAll().stream()
+                .filter(u -> u.getRole() == Role.STUDENT && timetableEventRepository.findByStudentOrderByDayIndexAscStartSlotAsc(u).isEmpty())
+                .forEach(studentUser -> {
+                    LocalDate today = LocalDate.now();
                     timetableEventRepository.saveAll(List.of(
-                        createSectionEvent(student, cseSection, "Advanced Algorithm Design", "Room 402-A", "blue", "Mon", 1, 12, 1, 2, "CS401"),
-                        createSectionEvent(student, cseSection, "Data Mining & Warehousing", "Auditorium B", "emerald", "Tue", 2, 13, 2, 3, "CS385"),
-                        createSectionEvent(student, cseSection, "Software Engineering Ethics", "Room 201", "amber", "Wed", 3, 14, 1, 2, "CS430"),
-                        createSectionEvent(student, cseSection, "Project Management Workshop", "Innovation Lab", "rose", "Thu", 4, 15, 3, 4, "CS385"),
-                        createSectionEvent(student, cseSection, "Network Security", "Cyber Lab", "indigo", "Fri", 5, 16, 2, 2, "CS430"),
-                        createSectionEvent(student, cseSection, "Academic Mentorship", "Faculty Office", "cyan", "Sat", 6, 17, 2, 2, "MATH302")));
+                            createEventForDate(studentUser, today, "Advanced Algorithms", "Room 402-A", "blue", 1, "CS401"),
+                            createEventForDate(studentUser, today.plusDays(1), "Data Mining Workshop", "Auditorium B", "emerald", 2, "CS385"),
+                            createEventForDate(studentUser, today.plusDays(2), "Software Engineering", "Room 201", "amber", 3, "CS430"),
+                            createEventForDate(studentUser, today.plusDays(3), "Database Project", "Innovation Lab", "rose", 4, "CS385"),
+                            createEventForDate(studentUser, today.plusDays(4), "Network Security Lab", "Cyber Lab", "indigo", 2, "CS430"),
+                            createEventForDate(studentUser, today.plusDays(5), "Academic Mentorship", "Faculty Office", "cyan", 5, "MATH302")));
+                });
+
+        if (timetableEventRepository.findBySectionOrderByDayIndexAscStartSlotAsc(cseSection).isEmpty()) {
+                    LocalDate today = LocalDate.now();
+                    timetableEventRepository.saveAll(List.of(
+                        createEventForDate(student, cseSection, today, "Advanced Algorithms", "Room 402-A", "blue", 1, "CS401"),
+                        createEventForDate(student, cseSection, today.plusDays(1), "Data Mining Workshop", "Auditorium B", "emerald", 2, "CS385"),
+                        createEventForDate(student, cseSection, today.plusDays(2), "Software Engineering", "Room 201", "amber", 3, "CS430"),
+                        createEventForDate(student, cseSection, today.plusDays(3), "Database Project", "Innovation Lab", "rose", 4, "CS385"),
+                        createEventForDate(student, cseSection, today.plusDays(4), "Network Security Lab", "Cyber Lab", "indigo", 2, "CS430"),
+                        createEventForDate(student, cseSection, today.plusDays(5), "Academic Mentorship", "Faculty Office", "cyan", 5, "MATH302")));
                 }
 
         if (announcementRepository.count() == 0) {
@@ -217,6 +237,45 @@ public class DataSeeder implements CommandLineRunner {
         assignment.setCompletionPercentage(progress);
         assignment.setStatus(status);
         return assignment;
+    }
+
+    private TimetableEvent createEventForDate(User student, LocalDate date, String title, String room, String tone, int startSlot, String courseCode) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        int dayIndex = dayOfWeek.getValue();
+        int dayOfMonth = date.getDayOfMonth();
+        
+        TimetableEvent event = new TimetableEvent();
+        event.setStudent(student);
+        event.setCourse(courseRepository.findByCourseCode(courseCode));
+        event.setTitle(title);
+        event.setRoom(room);
+        event.setTone(tone);
+        event.setDay(dayOfWeek.toString().substring(0, 1) + dayOfWeek.toString().substring(1).toLowerCase());
+        event.setDayIndex(dayIndex);
+        event.setDayDate(dayOfMonth);
+        event.setStartSlot(startSlot);
+        event.setDuration(2);
+        return event;
+    }
+
+    private TimetableEvent createEventForDate(User owner, Section section, LocalDate date, String title, String room, String tone, int startSlot, String courseCode) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        int dayIndex = dayOfWeek.getValue();
+        int dayOfMonth = date.getDayOfMonth();
+        
+        TimetableEvent event = new TimetableEvent();
+        event.setStudent(owner);
+        event.setSection(section);
+        event.setCourse(courseRepository.findByCourseCode(courseCode));
+        event.setTitle(title);
+        event.setRoom(room);
+        event.setTone(tone);
+        event.setDay(dayOfWeek.toString().substring(0, 1) + dayOfWeek.toString().substring(1).toLowerCase());
+        event.setDayIndex(dayIndex);
+        event.setDayDate(dayOfMonth);
+        event.setStartSlot(startSlot);
+        event.setDuration(2);
+        return event;
     }
 
     private TimetableEvent createEvent(User student, String title, String room, String tone, String day, int dayIndex, int dayDate, int startSlot, int duration, String courseCode) {

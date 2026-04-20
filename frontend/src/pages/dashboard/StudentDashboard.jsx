@@ -7,6 +7,22 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { fetchDashboard } from '../../features/dashboard/dashboardSlice'
 
+function formatClassTime(time) {
+  if (!time) {
+    return { primary: '', secondary: '' }
+  }
+
+  const parts = String(time).trim().split(/\s+/)
+  if (parts.length === 1) {
+    return { primary: parts[0], secondary: '' }
+  }
+
+  return {
+    primary: parts[0],
+    secondary: parts[parts.length - 1],
+  }
+}
+
 function StudentDashboard() {
   const dispatch = useAppDispatch()
   const dashboardData = useAppSelector((state) => state.dashboard.data)
@@ -15,10 +31,10 @@ function StudentDashboard() {
     dispatch(fetchDashboard())
   }, [dispatch])
 
-  const stats = dashboardData?.stats ?? dashboardStats
-  const classes = dashboardData?.upcomingClasses ?? upcomingClasses
-  const recent = dashboardData?.recentResults ?? recentResults
-  const tasks = dashboardData?.assignments ?? assignments
+  const stats = dashboardData?.stats?.length > 0 ? dashboardData.stats : dashboardStats
+  const classes = dashboardData?.upcomingClasses?.length > 0 ? dashboardData.upcomingClasses : upcomingClasses
+  const recent = dashboardData?.recentResults?.length > 0 ? dashboardData.recentResults : recentResults
+  const tasks = dashboardData?.assignments?.length > 0 ? dashboardData.assignments : assignments
   const welcomeName = dashboardData?.welcomeName ?? 'Julian'
 
   return (
@@ -51,10 +67,13 @@ function StudentDashboard() {
             </span>
           </div>
           <div className="space-y-3">
-            {classes.map((item) => (
-              <article key={item.course} className="flex items-center gap-4 rounded-xl bg-surface p-4 transition hover:bg-surface-container-low">
+            {classes.map((item, index) => (
+              <article key={`${item.course}-${item.time}-${item.room}-${index}`} className="flex items-center gap-4 rounded-xl bg-surface p-4 transition hover:bg-surface-container-low">
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-blue-100 text-primary">
-                  <span className="text-[10px] font-bold uppercase">{item.time.split(' ')[0]}</span>
+                  <span className="flex flex-col items-center leading-none text-[10px] font-bold uppercase">
+                    <span>{formatClassTime(item.time).primary}</span>
+                    {formatClassTime(item.time).secondary ? <span className="text-[9px]">{formatClassTime(item.time).secondary}</span> : null}
+                  </span>
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-bold text-on-surface">{item.course}</p>

@@ -32,5 +32,4 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK)
         .body(new ApiResponse<>(true, "Login successful", loginData));
     }
-    
 }

@@ -94,7 +94,7 @@ function MyProfile() {
               </div>
               <div>
                 <p className="text-xs text-on-surface-variant">Cumulative GPA</p>
-                <p className="font-bold">3.88 / 4.0</p>
+                <p className="font-bold">9.04 / 10</p>
               </div>
             </div>
           </article>

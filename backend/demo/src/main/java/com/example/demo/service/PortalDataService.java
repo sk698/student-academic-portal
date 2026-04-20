@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
 import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,8 +56,8 @@ public class PortalDataService {
         List<Result> allResults = resultRepository.findByStudentOrderByCreatedAtDesc(student);
         List<Result> latestResults = allResults.stream().limit(3).toList();
         List<Assignment> assignments = assignmentRepository.findTop5ByStudentOrderByIdDesc(student);
-        List<TimetableEvent> allEvents = timetableEventRepository.findByStudentOrderByDayIndexAscStartSlotAsc(student);
-        List<TimetableEvent> upcomingClasses = allEvents.stream().limit(2).toList();
+        List<TimetableEvent> allEvents = resolveTimetableEvents(student);
+        List<TimetableEvent> upcomingClasses = selectUpcomingClasses(allEvents, 3);
 
         double cgpa = calculateCgpa(allResults);
         int credits = allResults.stream()
@@ -120,7 +123,7 @@ public class PortalDataService {
                 .sum();
 
         long deansListCount = allResults.stream().filter(result -> gradePoint(result.getGrade()) >= 3.7).count();
-        double majorGpa = cgpa == 0 ? 0 : Math.min(4.0, cgpa + 0.07);
+        double majorGpa = cgpa == 0 ? 0 : Math.min(10.0, cgpa + 0.20);
 
         Map<String, Object> summary = new LinkedHashMap<>();
         summary.put("cgpa", format2(cgpa));
@@ -128,7 +131,7 @@ public class PortalDataService {
         summary.put("credits", credits + " / 120");
         summary.put("ranking", rankLabel(cgpa));
         summary.put("deansList", deansListCount + " Semesters");
-        summary.put("standing", cgpa >= 3.2 ? "Excellent" : cgpa >= 2.8 ? "Good" : "Improving");
+        summary.put("standing", cgpa >= 8.0 ? "Excellent" : cgpa >= 7.0 ? "Good" : "Improving");
 
         List<Map<String, Object>> breakdown = allResults.stream().map(result -> {
             Map<String, Object> row = new LinkedHashMap<>();
@@ -155,8 +158,7 @@ public class PortalDataService {
             "1:05 - 1:55 PM",
             "1:55 - 2:45 PM",
             "2:45 - 3:35 PM",
-            "3:35 - 4:25 PM",
-            "4:25 - 5:15 PM");
+            "3:35 - 4:25 PM");
 
         List<Map<String, Object>> eventRows = events.stream().map(event -> {
             Map<String, Object> row = new LinkedHashMap<>();
@@ -347,27 +349,86 @@ public class PortalDataService {
     }
 
     private String slotToTimeLabel(int slot) {
-        int hour = 7 + slot;
+        String[] slotLabels = {
+                "09:30 AM",
+                "10:20 AM",
+                "11:20 AM",
+                "12:10 PM",
+                "01:05 PM",
+                "01:55 PM",
+                "02:45 PM",
+            "03:35 PM" };
+
+        if (slot >= 1 && slot <= slotLabels.length) {
+            return slotLabels[slot - 1];
+        }
+
+        int hour = 8 + slot;
         int normalized = hour > 12 ? hour - 12 : hour;
         String meridian = hour >= 12 ? "PM" : "AM";
         return String.format("%02d:00 %s", normalized, meridian);
+    }
+
+    private List<TimetableEvent> selectUpcomingClasses(List<TimetableEvent> events, int limit) {
+        if (events.isEmpty()) {
+            return List.of();
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        int currentDayIndex = now.getDayOfWeek().getValue();
+        LocalTime currentTime = now.toLocalTime();
+
+        return events.stream()
+                .sorted(Comparator
+                        .comparingInt((TimetableEvent event) -> daysUntilEvent(event, currentDayIndex, currentTime))
+                        .thenComparingInt(event -> event.getStartSlot() == null ? Integer.MAX_VALUE : event.getStartSlot()))
+                .limit(limit)
+                .toList();
+    }
+
+    private int daysUntilEvent(TimetableEvent event, int currentDayIndex, LocalTime currentTime) {
+        int eventDayIndex = event.getDayIndex() == null ? currentDayIndex : event.getDayIndex();
+        int offset = (eventDayIndex - currentDayIndex + 7) % 7;
+        if (offset == 0 && slotStartTime(event.getStartSlot()).isBefore(currentTime)) {
+            return 7;
+        }
+        return offset;
+    }
+
+    private LocalTime slotStartTime(Integer slot) {
+        if (slot == null) {
+            return LocalTime.MAX;
+        }
+
+        return switch (slot) {
+            case 1 -> LocalTime.of(9, 30);
+            case 2 -> LocalTime.of(10, 20);
+            case 3 -> LocalTime.of(11, 20);
+            case 4 -> LocalTime.of(12, 10);
+            case 5 -> LocalTime.of(13, 5);
+            case 6 -> LocalTime.of(13, 55);
+            case 7 -> LocalTime.of(14, 45);
+            case 8 -> LocalTime.of(15, 35);
+            default -> LocalTime.of(Math.min(23, 8 + slot), 0);
+        };
     }
 
     private double calculateCgpa(List<Result> results) {
         if (results.isEmpty()) {
             return 0.0;
         }
-        return results.stream().mapToDouble(result -> gradePoint(result.getGrade())).average().orElse(0.0);
+        double averageGradePoint = results.stream().mapToDouble(result -> gradePoint(result.getGrade())).average().orElse(0.0);
+        return Math.min(10.0, averageGradePoint * 2.5);
     }
 
     private String rankLabel(double cgpa) {
-        if (cgpa >= 3.8) {
+        if (cgpa >= 9.5) {
             return "Top 5% of your cohort";
         }
-        if (cgpa >= 3.5) {
+        if (cgpa >= 8.75) {
             return "Top 10% of your cohort";
         }
-        if (cgpa >= 3.2) {
+        if (cgpa >= 8.0) {
             return "Strong academic standing";
         }
         return "Steady progress";

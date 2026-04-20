@@ -52,7 +52,7 @@ function ResultsOverview() {
       <section className="mb-8 grid gap-6 md:grid-cols-3">
         <article className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-container p-7 text-white shadow-[0_12px_32px_-8px_rgba(0,63,135,0.2)] md:col-span-2">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-100">Cumulative GPA</p>
-          <h2 className="mt-2 font-headline text-6xl font-black tracking-tight">{summary.cgpa} <span className="text-2xl font-medium text-blue-100">/ 4.0</span></h2>
+          <h2 className="mt-2 font-headline text-6xl font-black tracking-tight">{summary.cgpa} <span className="text-2xl font-medium text-blue-100">/ 10</span></h2>
           <p className="mt-4 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em]">
             {summary.ranking}
           </p>

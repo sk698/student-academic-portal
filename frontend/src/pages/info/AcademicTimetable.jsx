@@ -36,6 +36,14 @@ function AcademicTimetable() {
   const insights = timetableData?.insights ?? timetableInsights
   const dayCount = Math.max(days.length, 1)
   const slotCount = Math.max(slots.length, 1)
+  const leftColumnWidth = 120
+  const slotRowHeight = 98
+  const dayColumnTemplate = days
+    .map((day) => {
+      const label = String(day.day ?? '').trim().toLowerCase()
+      return label === 'sat' || label === 'sun' ? 'minmax(72px, 0.42fr)' : 'minmax(138px, 1fr)'
+    })
+    .join(' ')
 
   const handlePrint = () => {
     window.print()
@@ -73,49 +81,47 @@ function AcademicTimetable() {
         </div>
       </header>
 
-      <section className="rounded-[1.8rem] bg-surface-container-lowest p-5 shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]">
+      <section className="rounded-[1.8rem] bg-surface-container-lowest p-6 shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]">
         <div className="overflow-x-auto">
-          <div className="min-w-[980px]">
-            <div className="mb-3 grid gap-1" style={{ gridTemplateColumns: `80px repeat(${dayCount}, minmax(0, 1fr))` }}>
+          <div className="min-w-[1180px]">
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: `${leftColumnWidth}px ${dayColumnTemplate}` }}>
               <div />
               {days.map((day) => (
                 <div className="text-center" key={day.day}>
-                  <span className="text-xs font-bold uppercase tracking-[0.14em] text-outline">{day.day}</span>
+                  <span className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-outline">{day.day}</span>
                 </div>
               ))}
             </div>
 
-            <div className="grid rounded-xl bg-surface-container-low p-1" style={{ gridTemplateColumns: `80px repeat(${dayCount}, minmax(0, 1fr))` }}>
-              <div className="grid gap-1 pr-1" style={{ gridTemplateRows: `repeat(${slotCount}, minmax(0, 1fr))` }}>
+            <div className="grid rounded-2xl bg-surface-container-low p-2" style={{ gridTemplateColumns: `${leftColumnWidth}px ${dayColumnTemplate}` }}>
+              <div className="grid gap-2 pr-2" style={{ gridTemplateRows: `repeat(${slotCount}, ${slotRowHeight}px)` }}>
                 {slots.map((slot) => (
-                  <div className="grid h-20 place-items-center text-[11px] font-bold text-outline" key={slot}>{slot}</div>
+                  <div className="grid place-items-center rounded-lg bg-surface-container-lowest px-2 text-left text-[15px] font-bold leading-tight text-outline" key={slot}>{slot}</div>
                 ))}
               </div>
 
               <div
-                className="relative grid gap-1"
+                className="relative grid gap-2"
                 style={{
                   gridColumn: `span ${dayCount}`,
-                  gridTemplateColumns: `repeat(${dayCount}, minmax(0, 1fr))`,
-                  gridTemplateRows: `repeat(${slotCount}, minmax(0, 1fr))`,
+                  gridTemplateColumns: dayColumnTemplate,
+                  gridTemplateRows: `repeat(${slotCount}, ${slotRowHeight}px)`,
                 }}
               >
                 {Array.from({ length: dayCount * slotCount }).map((_, index) => (
-                  <div className="rounded-sm bg-white" key={index} />
+                  <div className="rounded-md bg-white" key={index} />
                 ))}
                 {events.map((event) => (
                   <article
-                    className={`absolute z-10 m-1 rounded-lg border-l-4 p-2 text-xs shadow-sm ${toneClasses[event.tone] ?? toneClasses.blue}`}
+                    className={`z-10 overflow-hidden rounded-xl border-l-4 px-3 py-2 shadow-sm ${toneClasses[event.tone] ?? toneClasses.blue}`}
                     key={event.id}
                     style={{
-                      left: `${((event.day - 1) * 100) / dayCount}%`,
-                      width: `${100 / dayCount}%`,
-                      top: `${((event.start - 1) * 100) / slotCount}%`,
-                      height: `${(event.duration * 100) / slotCount}%`,
+                      gridColumn: event.day,
+                      gridRow: `${event.start} / span ${event.duration}`,
                     }}
                   >
-                    <p className="font-bold leading-tight">{event.title}</p>
-                    <p className="mt-1 text-[10px]">{event.room}</p>
+                    <p className="line-clamp-2 text-[18px] font-extrabold leading-tight">{event.title}</p>
+                    <p className="mt-1 text-[14px] font-semibold leading-tight opacity-90">{event.room}</p>
                   </article>
                 ))}
               </div>
