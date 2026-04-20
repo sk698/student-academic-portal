@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectIsAdmin } from '../../features/auth/authSelectors'
 
 const navItems = [
   { to: '/dashboard', label: 'Home', icon: 'dashboard' },
@@ -6,14 +8,16 @@ const navItems = [
   { to: '/timetable', label: 'Table', icon: 'calendar_month' },
   { to: '/announcements', label: 'Notices', icon: 'campaign' },
   { to: '/profile', label: 'Profile', icon: 'person' },
-  { to: '/admin', label: 'Admin', icon: 'admin_panel_settings' },
 ]
 
 function MobileNav() {
+  const isAdmin = useAppSelector(selectIsAdmin)
+  const allItems = isAdmin ? [...navItems, { to: '/admin', label: 'Admin', icon: 'admin_panel_settings' }] : navItems
+
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 bg-white/90 px-2 py-2 shadow-[0_-8px_30px_-16px_rgba(0,63,135,0.24)] backdrop-blur-md lg:hidden">
-      <ul className="grid grid-cols-6 gap-1">
-        {navItems.map((item) => (
+      <ul className={`grid gap-1 ${isAdmin ? 'grid-cols-6' : 'grid-cols-5'}`}>
+        {allItems.map((item) => (
           <li key={item.to}>
             <NavLink
               className={({ isActive }) =>

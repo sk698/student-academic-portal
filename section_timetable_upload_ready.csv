@@ -1,0 +1,32 @@
+title,room,day,dayIndex,dayDate,startSlot,duration,courseCode,tone
+24CSH-207 GP-B Rajalaxmi Sarangi,Block-C1-208-B,Mon,1,12,1,1,24CSH-207,blue
+24CSH-207 GP-B Rajalaxmi Sarangi,Block-C1-208-B,Mon,1,12,2,1,24CSH-207,blue
+24CSP-210 GP-B Juned Alam,Block-C1-208-B,Mon,1,12,3,1,24CSP-210,blue
+24CSP-210 GP-B Juned Alam,Block-C1-208-B,Mon,1,12,4,1,24CSP-210,blue
+24CST-208 GP-All Siddharth Arora,Block-B1-320,Mon,1,12,6,1,24CST-208,blue
+24TDP-291 GP-B Bani Dhaul,Block-B1-301-A,Mon,1,12,7,1,24TDP-291,blue
+24TDP-291 GP-B Bani Dhaul,Block-B1-301-A,Mon,1,12,8,1,24TDP-291,blue
+24CSH-206 GP-B Mohammad Shaqlain,Block-C1-307,Tue,2,13,1,1,24CSH-206,blue
+24CSH-206 GP-B Mohammad Shaqlain,Block-C1-307,Tue,2,13,2,1,24CSH-206,blue
+24CSH-206 GP-All Pulkit,Block-C1-307,Tue,2,13,3,1,24CSH-206,blue
+24CSH-207 GP-All Rajalaxmi Sarangi,Block-C1-307,Tue,2,13,4,1,24CSH-207,blue
+24TDP-291 GP-B Bani Dhaul,Block-B1-301-A,Tue,2,13,7,1,24TDP-291,blue
+24TDP-291 GP-B Bani Dhaul,Block-B1-301-A,Tue,2,13,8,1,24TDP-291,blue
+24CSH-207 GP-All Rajalaxmi Sarangi,Block-C1-307,Wed,3,14,1,1,24CSH-207,blue
+24CSH-206 GP-All Pulkit,Block-C1-208-A,Wed,3,14,2,1,24CSH-206,blue
+24CST-205 GP-All Reena Sharma,Block-C1-307,Wed,3,14,3,1,24CST-205,blue
+24CST-208 GP-All Siddharth Arora,Block-B1-320,Wed,3,14,5,1,24CST-208,blue
+24TDT-292 GP-B Ashish Agrawal,Block-B1-320,Wed,3,14,6,1,24TDT-292,blue
+24TDT-292 GP-B Ashish Agrawal,Block-B1-320,Wed,3,14,7,1,24TDT-292,blue
+24CSR-208 GP-B,Block-B1-907,Wed,3,14,8,1,24CSR-208,blue
+24CSP-210 GP-B Juned Alam,Block-C1-307,Thu,4,15,1,1,24CSP-210,blue
+24CSP-210 GP-B Juned Alam,Block-C1-307,Thu,4,15,2,1,24CSP-210,blue
+24CSH-206 GP-All Pulkit,Block-C1-208-B,Thu,4,15,3,1,24CSH-206,blue
+24CST-205 GP-All Reena Sharma,Block-C1-208-B,Thu,4,15,4,1,24CST-205,blue
+24CST-208 GP-All Siddharth Arora,Block-B1-320,Thu,4,15,6,1,24CST-208,blue
+24TDT-292 GP-B Ashish Agrawal,Block-B1-320,Thu,4,15,7,1,24TDT-292,blue
+24TDT-292 GP-B Ashish Agrawal,Block-B1-320,Thu,4,15,8,1,24TDT-292,blue
+24CSP-209 GP-B Shivam Sharma,Block-C1-208-B,Fri,5,16,1,1,24CSP-209,blue
+24CSP-209 GP-B Shivam Sharma,Block-C1-208-B,Fri,5,16,2,1,24CSP-209,blue
+24CST-205 GP-All Reena Sharma,Block-C1-208-B,Fri,5,16,3,1,24CST-205,blue
+24CST-211 GP-All Neeraj Sharma,Block-B1-320,Fri,5,16,5,1,24CST-211,blue

@@ -1,5 +1,14 @@
 package com.example.demo.repository;
 
-public class UserRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.Role;
+import com.example.demo.entity.Section;
+import com.example.demo.entity.User;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+    User findByEmail(String email);
+    User findByStudentId(String studentId);
+    User findFirstBySectionAndRoleOrderByIdAsc(Section section, Role role);
 }

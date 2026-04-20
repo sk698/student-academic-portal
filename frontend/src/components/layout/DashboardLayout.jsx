@@ -2,14 +2,15 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import MobileNav from './MobileNav'
 import Sidebar from './Sidebar'
 import TopHeader from './TopHeader'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { logout } from '../../features/auth/authSlice'
 
 function DashboardLayout() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    sessionStorage.clear()
+    dispatch(logout())
     navigate('/login')
   }
 

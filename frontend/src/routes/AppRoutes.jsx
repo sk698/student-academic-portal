@@ -9,6 +9,7 @@ import Announcements from '../pages/info/Announcements'
 import AcademicTimetable from '../pages/info/AcademicTimetable'
 import MyProfile from '../pages/info/MyProfile'
 import ResultsOverview from '../pages/info/ResultsOverview'
+import ProtectedRoute from './ProtectedRoute'
 
 function AppRoutes() {
   return (
@@ -18,17 +19,24 @@ function AppRoutes() {
         <Route path="/register" element={<Registration />} />
       </Route>
 
-      <Route element={<DashboardLayout />}>
-        <Route path="/dashboard" element={<StudentDashboard />} />
-        <Route path="/results" element={<ResultsOverview />} />
-        <Route path="/timetable" element={<AcademicTimetable />} />
-        <Route path="/announcements" element={<Announcements />} />
-        <Route path="/profile" element={<MyProfile />} />
-        <Route path="/admin" element={<AdminPanel />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<StudentDashboard />} />
+          <Route path="/results" element={<ResultsOverview />} />
+          <Route path="/timetable" element={<AcademicTimetable />} />
+          <Route path="/announcements" element={<Announcements />} />
+          <Route path="/profile" element={<MyProfile />} />
+        </Route>
       </Route>
 
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route element={<ProtectedRoute adminOnly />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/admin" element={<AdminPanel />} />
+        </Route>
+      </Route>
+
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   )
 }

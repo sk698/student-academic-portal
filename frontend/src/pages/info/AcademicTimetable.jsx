@@ -1,4 +1,8 @@
+import { useEffect } from 'react'
 import { timetableDays, timetableEvents, timetableInsights, timetableSlots } from '../../data/mockData'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { fetchTimetable } from '../../features/info/timetableSlice'
 
 const toneClasses = {
   blue: 'bg-blue-100 border-blue-600 text-blue-900',
@@ -11,6 +15,51 @@ const toneClasses = {
 }
 
 function AcademicTimetable() {
+  const dispatch = useAppDispatch()
+  const timetableData = useAppSelector((state) => state.timetable.data)
+
+  useEffect(() => {
+    dispatch(fetchTimetable())
+  }, [dispatch])
+
+  const days = timetableData?.days ?? timetableDays
+  const slots = timetableData?.slots ?? timetableSlots
+  const events = (timetableData?.events ?? timetableEvents).map((event, index) => ({
+    id: event.id ?? `event-${index}`,
+    day: Number(event.day ?? event.dayIndex ?? 1),
+    start: Number(event.start ?? event.startSlot ?? 1),
+    duration: Number(event.duration ?? 1),
+    title: event.title,
+    room: event.room,
+    tone: event.tone ?? 'blue',
+  }))
+  const insights = timetableData?.insights ?? timetableInsights
+  const dayCount = Math.max(days.length, 1)
+  const slotCount = Math.max(slots.length, 1)
+
+  const handlePrint = () => {
+    window.print()
+  }
+
+  const handleDownload = () => {
+    const payload = {
+      days,
+      slots,
+      events,
+      insights,
+      generatedAt: new Date().toISOString(),
+    }
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'weekly-timetable.json')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <>
       <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -19,46 +68,50 @@ function AcademicTimetable() {
           <p className="mt-2 text-sm text-on-surface-variant">Semester 6 spring schedule optimized for focus and workload balance.</p>
         </div>
         <div className="flex gap-3">
-          <button className="rounded-xl bg-surface-container-high px-4 py-2 text-sm font-semibold" type="button">Print</button>
-          <button className="rounded-xl bg-gradient-to-br from-primary to-primary-container px-5 py-2 text-sm font-bold text-white" type="button">Download PDF</button>
+          <button className="rounded-xl bg-surface-container-high px-4 py-2 text-sm font-semibold" onClick={handlePrint} type="button">Print</button>
+          <button className="rounded-xl bg-gradient-to-br from-primary to-primary-container px-5 py-2 text-sm font-bold text-white" onClick={handleDownload} type="button">Download PDF</button>
         </div>
       </header>
 
       <section className="rounded-[1.8rem] bg-surface-container-lowest p-5 shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]">
         <div className="overflow-x-auto">
           <div className="min-w-[980px]">
-            <div className="mb-3 grid grid-cols-[80px_repeat(6,1fr)] gap-1">
+            <div className="mb-3 grid gap-1" style={{ gridTemplateColumns: `80px repeat(${dayCount}, minmax(0, 1fr))` }}>
               <div />
-              {timetableDays.map((day, idx) => (
+              {days.map((day) => (
                 <div className="text-center" key={day.day}>
                   <span className="text-xs font-bold uppercase tracking-[0.14em] text-outline">{day.day}</span>
-                  <div className={`mx-auto mt-1 grid h-10 w-10 place-items-center rounded-full font-headline font-bold ${idx === 0 ? 'bg-primary/10 text-primary' : 'text-on-surface'}`}>
-                    {day.date}
-                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="grid grid-cols-[80px_repeat(6,1fr)] rounded-xl bg-surface-container-low p-1">
-              <div className="grid grid-rows-10 gap-1 pr-1">
-                {timetableSlots.map((slot) => (
+            <div className="grid rounded-xl bg-surface-container-low p-1" style={{ gridTemplateColumns: `80px repeat(${dayCount}, minmax(0, 1fr))` }}>
+              <div className="grid gap-1 pr-1" style={{ gridTemplateRows: `repeat(${slotCount}, minmax(0, 1fr))` }}>
+                {slots.map((slot) => (
                   <div className="grid h-20 place-items-center text-[11px] font-bold text-outline" key={slot}>{slot}</div>
                 ))}
               </div>
 
-              <div className="relative col-span-6 grid grid-cols-6 grid-rows-10 gap-1">
-                {Array.from({ length: 60 }).map((_, index) => (
+              <div
+                className="relative grid gap-1"
+                style={{
+                  gridColumn: `span ${dayCount}`,
+                  gridTemplateColumns: `repeat(${dayCount}, minmax(0, 1fr))`,
+                  gridTemplateRows: `repeat(${slotCount}, minmax(0, 1fr))`,
+                }}
+              >
+                {Array.from({ length: dayCount * slotCount }).map((_, index) => (
                   <div className="rounded-sm bg-white" key={index} />
                 ))}
-                {timetableEvents.map((event) => (
+                {events.map((event) => (
                   <article
-                    className={`absolute z-10 m-1 rounded-lg border-l-4 p-2 text-xs shadow-sm ${toneClasses[event.tone]}`}
+                    className={`absolute z-10 m-1 rounded-lg border-l-4 p-2 text-xs shadow-sm ${toneClasses[event.tone] ?? toneClasses.blue}`}
                     key={event.id}
                     style={{
-                      left: `${((event.day - 1) * 100) / 6}%`,
-                      width: `${100 / 6}%`,
-                      top: `${((event.start - 1) * 100) / 10}%`,
-                      height: `${(event.duration * 100) / 10}%`,
+                      left: `${((event.day - 1) * 100) / dayCount}%`,
+                      width: `${100 / dayCount}%`,
+                      top: `${((event.start - 1) * 100) / slotCount}%`,
+                      height: `${(event.duration * 100) / slotCount}%`,
                     }}
                   >
                     <p className="font-bold leading-tight">{event.title}</p>
@@ -72,7 +125,7 @@ function AcademicTimetable() {
       </section>
 
       <section className="mt-6 grid gap-4 md:grid-cols-2">
-        {timetableInsights.map((item) => (
+        {insights.map((item) => (
           <article className="rounded-2xl bg-surface-container-lowest p-6 shadow-[0_12px_32px_-8px_rgba(0,63,135,0.08)]" key={item.label}>
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-on-surface-variant">{item.label}</p>
             <p className="mt-2 font-headline text-4xl font-black text-primary">{item.value}</p>

@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectIsAdmin } from '../../features/auth/authSelectors'
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
@@ -6,10 +8,12 @@ const navItems = [
   { to: '/timetable', label: 'Timetable', icon: 'calendar_month' },
   { to: '/announcements', label: 'Announcements', icon: 'campaign' },
   { to: '/profile', label: 'Profile', icon: 'person' },
-  { to: '/admin', label: 'Admin', icon: 'admin_panel_settings' },
 ]
 
 function Sidebar({ onLogout }) {
+  const isAdmin = useAppSelector(selectIsAdmin)
+  const allItems = isAdmin ? [...navItems, { to: '/admin', label: 'Admin', icon: 'admin_panel_settings' }] : navItems
+
   return (
     <aside className="hidden h-screen bg-slate-50 py-6 lg:sticky lg:top-0 lg:flex lg:flex-col">
       <div className="mb-8 px-6">
@@ -25,7 +29,7 @@ function Sidebar({ onLogout }) {
       </div>
 
       <nav className="flex-1 space-y-1 px-2">
-        {navItems.map((item) => (
+        {allItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}

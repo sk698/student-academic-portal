@@ -1,7 +1,28 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import GradientButton from '../../components/ui/GradientButton'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { loginUser } from '../../features/auth/authSlice'
+import { selectAuthError, selectAuthStatus } from '../../features/auth/authSelectors'
 
 function Login() {
+  const [formState, setFormState] = useState({ username: '', password: '' })
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const status = useAppSelector(selectAuthStatus)
+  const error = useAppSelector(selectAuthError)
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const resultAction = await dispatch(loginUser(formState))
+    if (loginUser.fulfilled.match(resultAction)) {
+      const role = resultAction.payload.role
+      navigate(role === 'ADMIN' ? '/admin' : '/dashboard')
+    }
+  }
+
   return (
     <>
       <div className="mb-8 flex items-center gap-2">
@@ -18,12 +39,18 @@ function Login() {
         </p>
       </header>
 
-      <form className="space-y-5">
+      <form className="space-y-5" onSubmit={handleSubmit}>
         <label className="grid gap-2">
-          <span className="text-sm font-semibold text-on-surface-variant">Institutional Email</span>
+          <span className="text-sm font-semibold text-on-surface-variant">Username</span>
           <span className="relative">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">mail</span>
-            <input className="w-full rounded-xl bg-surface-container-high py-3 pl-11 pr-4 text-sm outline-none ring-primary/20 transition focus:ring-2" placeholder="student@university.edu" type="email" />
+            <input
+              className="w-full rounded-xl bg-surface-container-high py-3 pl-11 pr-4 text-sm outline-none ring-primary/20 transition focus:ring-2"
+              onChange={(event) => setFormState((prev) => ({ ...prev, username: event.target.value }))}
+              placeholder="student"
+              type="text"
+              value={formState.username}
+            />
           </span>
         </label>
 
@@ -34,10 +61,20 @@ function Login() {
           </span>
           <span className="relative">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">lock</span>
-            <input className="w-full rounded-xl bg-surface-container-high py-3 pl-11 pr-10 text-sm outline-none ring-primary/20 transition focus:ring-2" placeholder="........" type="password" />
+            <input
+              className="w-full rounded-xl bg-surface-container-high py-3 pl-11 pr-10 text-sm outline-none ring-primary/20 transition focus:ring-2"
+              onChange={(event) => setFormState((prev) => ({ ...prev, password: event.target.value }))}
+              placeholder="........"
+              type="password"
+              value={formState.password}
+            />
             <button className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline" type="button">visibility</button>
           </span>
         </label>
+
+        {error ? (
+          <p className="rounded-lg bg-error-container px-3 py-2 text-sm text-error">{error}</p>
+        ) : null}
 
         <label className="flex items-center gap-2 text-sm text-on-surface-variant">
           <input className="h-4 w-4 accent-primary" type="checkbox" />
@@ -45,7 +82,7 @@ function Login() {
         </label>
 
         <GradientButton className="w-full py-3" type="submit">
-          Sign In
+          {status === 'loading' ? 'Signing In...' : 'Sign In'}
           <span className="material-symbols-outlined ml-1 text-[18px]">arrow_forward</span>
         </GradientButton>
       </form>
